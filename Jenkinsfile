@@ -1,14 +1,16 @@
 pipeline {
-    agent any
-
-    parameters {
-        string(name: 'JD_TO_PULL', defaultValue: 'nginx:latest', description: 'Docker image to pull')
+    
+    agent {
+        docker {
+            image 'node:16-buster-slim'
+            args '-p 3000:3000'
+        }
     }
-
     stages {
-        stage('Pull Docker Image') {
+        stage('Build') {
             steps {
-                sh 'docker pull $JD_TO_PULL'
+                sh 'npm install'
+                sh '/usr/local/bin/docker pull '$JD_TO_PULL''
             }
         }
     }
