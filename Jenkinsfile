@@ -5,11 +5,21 @@ pipeline {
     }
   }
 
+  options {
+    skipDefaultCheckout()
+  }
+
   stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
     stage('Build') {
       steps {
         sh 'node -v'
-        sh 'npm install'
+        sh 'npm ci'
         sh 'npm run build'
       }
     }
