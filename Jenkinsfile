@@ -1,4 +1,10 @@
 pipeline {
+    agent any
+
+    environment {
+        JD_TO_PULL = "nginx:latest"
+    }
+    
     agent {
         docker {
             image 'node:16-buster-slim'
