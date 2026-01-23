@@ -18,6 +18,7 @@ pipeline {
 
     stage('Build') {
       steps {
+        sh 'docker version'
         sh 'node -v'
         sh 'npm ci'
         sh 'npm run build'
