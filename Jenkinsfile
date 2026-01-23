@@ -9,6 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'npm install'
+                sh '/usr/local/bin/docker pull "$JD_TO_PULL"'
             }
         }
     }
