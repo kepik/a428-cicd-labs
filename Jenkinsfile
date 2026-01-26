@@ -1,28 +1,15 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:16-buster-slim'
+    agent {
+        docker {
+            image 'node:16-buster-slim' 
+            args '-p 3000:3000' 
+        }
     }
-  }
-
-  options {
-    skipDefaultCheckout()
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'npm install'
+            }
+        }
     }
-
-    stage('Build') {
-      steps {
-        sh 'docker version'
-        sh 'node -v'
-        sh 'npm ci'
-        sh 'npm run build'
-      }
-    }
-  }
 }
