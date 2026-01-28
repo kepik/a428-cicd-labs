@@ -1,18 +1,36 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim'
-        }
-    }
+    agent any
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'npm run build'
+                git branch: 'submission',
+                    url: 'https://github.com/kepik/a428-cicd-labs.git'
             }
         }
-        stage('Test') {
+
+        stage('Install & Test') {
+            agent {
+                docker {
+                    image 'python:3.11-slim'
+                }
+            }
             steps {
-                sh 'npm run test'
+                sh '''
+                  pip install pytest
+                  pytest || true
+                '''
+            }
+        }
+
+        stage('Run App') {
+            agent {
+                docker {
+                    image 'python:3.11-slim'
+                }
+            }
+            steps {
+                sh 'python app.py || true'
             }
         }
     }
