@@ -33,8 +33,8 @@ pipeline {
                 sh 'npm start &'
             }
         }
-        
-        stage('Test') {
+
+        stage('Result') {
             steps {
                 echo 'No tests available, skipping test stage'
             }
