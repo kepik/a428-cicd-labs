@@ -1,8 +1,10 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'nodejs'
+    environment {
+        NODE_VERSION = "18.19.0"
+        NODE_HOME = "${WORKSPACE}/node"
+        PATH = "${WORKSPACE}/node/bin:${env.PATH}"
     }
 
     stages {
@@ -10,6 +12,19 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Install Node.js') {
+            steps {
+                sh '''
+                if [ ! -d "$NODE_HOME" ]; then
+                  echo "Downloading Node.js..."
+                  curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz -o node.tar.xz
+                  tar -xf node.tar.xz
+                  mv node-v$NODE_VERSION-linux-x64 $NODE_HOME
+                fi
+                '''
             }
         }
 
@@ -22,21 +37,18 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies'
                 sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building React app'
                 sh 'npm run build'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests'
                 sh 'npm test -- --watchAll=false || true'
             }
         }
