@@ -1,21 +1,35 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-slim'
-        }
+    agent any
+
+    tools {
+        nodejs 'nodejs'
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
+        stage('Check Environment') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies'
+                sh 'npm install'
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Installing dependencies and building app'
-                sh 'npm install'
+                echo 'Building React app'
                 sh 'npm run build'
             }
         }
@@ -27,18 +41,6 @@ pipeline {
             }
         }
 
-        stage('Run App') {
-            steps {
-                echo 'Running application'
-                sh 'npm start &'
-            }
-        }
-
-        stage('Result') {
-            steps {
-                echo 'No tests available, skipping test stage'
-            }
-        }
         stage('Deploy') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
@@ -46,6 +48,5 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
-
     }
 }
