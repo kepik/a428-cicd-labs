@@ -1,32 +1,26 @@
 pipeline {
-    agent any
-
-    stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
+    agent {
+        docker {
+            image 'node:16-buster-slim'
+            args '-p 3000:3000'
         }
-
+    }
+    stages {
         stage('Build') {
             steps {
-                echo 'Skipping build step (Node.js & npm not available in this environment)'
+                sh 'npm install'
             }
         }
-
         stage('Test') {
             steps {
-                echo 'Skipping test step (npm not available)'
+                sh './jenkins/scripts/test.sh'
             }
         }
-
-        stage('Deploy') {
+        stage('Deploy') { 
             steps {
-                sh './jenkins/scripts/deliver.sh'
-                input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
-                sh './jenkins/scripts/kill.sh || true'
-
+                sh './jenkins/scripts/deliver.sh' 
+                input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
+                sh './jenkins/scripts/kill.sh || true' 
             }
         }
     }
