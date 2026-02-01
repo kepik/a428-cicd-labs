@@ -8,10 +8,15 @@ pipeline {
             }
         }
 
+        stages {
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Installing dependencies and building app'
-                sh 'npm install'
                 sh 'npm run build'
             }
         }
