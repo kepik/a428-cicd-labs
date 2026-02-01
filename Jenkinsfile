@@ -19,10 +19,10 @@ pipeline {
             steps {
                 sh '''
                 if [ ! -d "$NODE_HOME" ]; then
-                  echo "Installing Node.js..."
-                  curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz -o node.tar.gz
+                  echo "Installing Node.js (ARM64)..."
+                  curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-arm64.tar.gz -o node.tar.gz
                   tar -xzf node.tar.gz
-                  mv node-v$NODE_VERSION-linux-x64 $NODE_HOME
+                  mv node-v$NODE_VERSION-linux-arm64 $NODE_HOME
                 fi
                 '''
             }
