@@ -19,16 +19,16 @@ pipeline {
             steps {
                 sh '''
                 if [ ! -d "$NODE_HOME" ]; then
-                  echo "Downloading Node.js..."
-                  curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz -o node.tar.xz
-                  tar -xf node.tar.xz
+                  echo "Installing Node.js..."
+                  curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz -o node.tar.gz
+                  tar -xzf node.tar.gz
                   mv node-v$NODE_VERSION-linux-x64 $NODE_HOME
                 fi
                 '''
             }
         }
 
-        stage('Check Environment') {
+        stage('Check Node') {
             steps {
                 sh 'node -v'
                 sh 'npm -v'
