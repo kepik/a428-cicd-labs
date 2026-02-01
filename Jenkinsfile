@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-    
+    agent {
+        docker {
+            image 'node:18-slim'
+        }
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -8,15 +12,10 @@ pipeline {
             }
         }
 
-        
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
         stage('Build') {
             steps {
+                echo 'Installing dependencies and building app'
+                sh 'npm install'
                 sh 'npm run build'
             }
         }
@@ -47,5 +46,6 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
+
     }
 }
