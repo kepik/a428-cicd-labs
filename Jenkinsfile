@@ -1,17 +1,6 @@
 pipeline {
     agent any
-
-    tools {
-        nodejs 'nodejs'
-    }
     
-    stage('Check Environment') {
-        steps {
-            sh 'node -v'
-            sh 'npm -v'
-        }
-    }
-
     stages {
         stage('Checkout') {
             steps {
