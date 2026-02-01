@@ -1,8 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:16-buster-slim'
-            args '-u root'
+            image 'node:18-slim'
         }
     }
 
