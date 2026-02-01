@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-slim'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
