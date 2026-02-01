@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:16-buster-slim'
+            args '-u root'
         }
     }
 
@@ -37,6 +38,13 @@ pipeline {
         stage('Result') {
             steps {
                 echo 'No tests available, skipping test stage'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
+                sh './jenkins/scripts/kill.sh'
             }
         }
 
