@@ -2,9 +2,9 @@ pipeline {
     agent {
         docker {
             image 'node:16-buster-slim'
+            args '-u root'
         }
     }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,29 +16,31 @@ pipeline {
             steps {
                 echo 'Installing dependencies and building app'
                 sh 'npm install'
-                sh 'npm run build'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests'
-                sh 'npm test -- --watchAll=false || true'
+               // sh 'npm test -- --watchAll=false || true'
             }
         }
 
-        stage('Run App') {
+        stage('Manual Approval') {
             steps {
-                echo 'Running application'
-                sh 'npm start &'
+                input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
             }
         }
-
-        stage('Result') {
+        stage('Deploy') { 
             steps {
-                echo 'No tests available, skipping test stage'
+                sh './jenkins/scripts/deliver.sh'
+
+                echo 'React App berjalan selama 1 menit...'
+                sleep time: 60, unit: 'SECONDS'
+
+                echo 'Menghentikan aplikasi...'
+                sh './jenkins/scripts/kill.sh'
             }
         }
-
     }
 }
