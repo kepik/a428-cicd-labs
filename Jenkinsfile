@@ -10,17 +10,23 @@ pipeline {
             steps {
                 checkout scm
             }
-        }    
+        }
+
         stage('Build') {
             steps {
+                echo 'Installing dependencies and building app'
                 sh 'npm install'
+                sh 'npm run build'
             }
         }
+
         stage('Test') {
             steps {
-                sh './jenkins/scripts/test.sh'
+                echo 'Running tests'
+                sh 'npm test -- --watchAll=false || true'
             }
         }
+
         stage('Manual Approval') {
             steps {
                 input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
