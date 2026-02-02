@@ -14,6 +14,7 @@ pipeline {
 
         stage('Build') {
             steps {
+                sh 'node -v'
                 echo 'Installing dependencies and building app'
                 sh 'npm install'
             }
