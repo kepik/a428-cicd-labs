@@ -1,10 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim'
-            args '-u root'
-        }
-    }
+    agent any
+    
     stages {
         stage('Checkout') {
             steps {
