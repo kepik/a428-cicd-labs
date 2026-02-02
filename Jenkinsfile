@@ -1,8 +1,14 @@
 pipeline {
     agent {
-        docker { image 'node:16-alpine' }
+        docker { image 'node:16-buster-slim' }
+        args '-u root'
     }
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }    
         stage('Build') {
             steps {
                 sh 'npm install'
