@@ -2,20 +2,26 @@ pipeline {
     agent {
         docker {
             image 'node:20-alpine'
-            args '-u root'
+            args '-u root:root'
         }
     }
 
     stages {
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Run Test') {
+        stage('Test') {
             steps {
                 sh 'npm test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
             }
         }
     }
