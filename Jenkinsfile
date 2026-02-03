@@ -6,11 +6,6 @@ pipeline {
         }
     }
 
-    environment {
-        PATH = "/usr/local/bin:/usr/bin:/bin"
-    }
-
-
     stages {
         stage('Install Dependencies') {
             steps {
