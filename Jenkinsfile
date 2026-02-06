@@ -21,7 +21,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh './jenkins/scripts/test.sh'
-                sleep time: 1, unit: 'MINUTES'
             }
         }
 
